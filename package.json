@@ -2,7 +2,8 @@
   "name": "hono-drizzle-api",
   "scripts": {
     "dev": "bun run --hot src/index.ts",
-    "start": "bun run src/index.ts"
+    "start": "bun run src/index.ts",
+    "postinstall": "bunx drizzle-kit push"
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",
