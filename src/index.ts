@@ -1,7 +1,8 @@
 import { Hono } from "hono";
 import { db } from "../db";
-import { todosTable } from "../db/schema";
+import { insertUserSchema, todosTable } from "../db/schema";
 import { eq } from "drizzle-orm";
+import { zValidator } from "@hono/zod-validator";
 
 const app = new Hono()
   .basePath("/api/todos")
@@ -18,19 +19,19 @@ const app = new Hono()
     if (todo.length === 0) return c.notFound();
     return c.json(todo);
   })
-  .post("/", async (c) => {
-    const data = await c.req.json();
+  .post("/", zValidator("json", insertUserSchema), async (c) => {
+    const data = c.req.valid("json");
     const createdTodo = await db.insert(todosTable).values(data).returning();
     return c.json(createdTodo, 201);
   })
-  .patch("/:id", async (c) => {
+  .patch("/:id", zValidator("json", insertUserSchema), async (c) => {
     const id = c.req.param("id");
     const todo = await db
       .select()
       .from(todosTable)
       .where(eq(todosTable.id, Number(id)));
     if (todo.length === 0) return c.notFound();
-    const data = await c.req.json();
+    const data = c.req.valid("json");
     const updatedTodo = await db
       .update(todosTable)
       .set(data)

@@ -6,8 +6,10 @@
     "postinstall": "bunx drizzle-kit push"
   },
   "dependencies": {
+    "@hono/zod-validator": "^0.4.1",
     "@libsql/client": "^0.14.0",
     "drizzle-orm": "^0.38.1",
+    "drizzle-zod": "^0.6.0",
     "hono": "^4.6.13"
   },
   "devDependencies": {
