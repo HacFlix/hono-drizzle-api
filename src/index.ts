@@ -3,9 +3,11 @@ import { db } from "../db";
 import { insertUserSchema, todosTable } from "../db/schema";
 import { eq } from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
+import { cors } from "hono/cors";
 
 const app = new Hono()
   .basePath("/api/todos")
+  .use(cors())
   .get("/", async (c) => {
     const todos = await db.select().from(todosTable);
     return c.json(todos);
